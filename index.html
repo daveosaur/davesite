@@ -1,0 +1,17 @@
+<script>
+    function submitFunction(input) {
+        document.getElementById(input).submit();
+    }
+</script>
+<h1> davewiki </h1>
+<p>
+    {{range .Files}}
+        <p>
+        <form id="{{.}}" action="/delete/{{.}}" method="POST">
+            <a href="/view/{{.}}">{{.}} </a>
+            [<a href="/edit/{{.}}">edit</a>]
+            [<a href="#" onclick="submitFunction({{.}})">delete</a>]
+        </form>
+        </p>
+    {{end}}
+</p>
