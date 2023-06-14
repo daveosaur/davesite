@@ -1,17 +1,27 @@
-<script>
-    function submitFunction(input) {
-        document.getElementById(input).submit();
-    }
-</script>
-<h1> davewiki </h1>
-<p>
-    {{range .Files}}
+<html>
+    <head>
+        <title> davewiki </title>
+        <script>
+            function delPage(input) {
+                document.getElementById(input).submit();
+            }
+        </script>
+    </head>
+    <body>
+        <h1> davewiki </h1>
+        {{range .Files}}
+            <p>
+            <form id="{{.}}" action="/delete/{{.}}" method="POST">
+                <a href="/view/{{.}}">{{.}} </a>
+                [<a href="/edit/{{.}}">edit</a>]
+                [<a href="#" onclick="delPage({{.}})">delete</a>]
+            </form>
+            </p>
+        {{end}}
+        <br>
         <p>
-        <form id="{{.}}" action="/delete/{{.}}" method="POST">
-            <a href="/view/{{.}}">{{.}} </a>
-            [<a href="/edit/{{.}}">edit</a>]
-            [<a href="#" onclick="submitFunction({{.}})">delete</a>]
-        </form>
+            <a href="/new/"> new page </a>
         </p>
-    {{end}}
-</p>
+    </body>
+</html>
+

@@ -1,12 +1,16 @@
-<h1>Editing {{.Title}}</h1>
+<html>
+    <head>
+        <title> davewiki </title>
+   </head>
+    <body>
+        <h1>Editing {{.Title}}</h1>
 
-<form action="/save/{{.Title}}" method="POST">
-    <div><textarea name="body" rows="20" cols="80">{{printf "%s" .Body}}</textarea></div>
-    <div>
-        <input type="submit" value="Save">
-        <form action="/view/{{.Title}}" method="GET">
-            <input type="submit" value="Cancel">
+        <form id="page" action="/save/{{.Title}}" method="POST">
+            <div>
+                <textarea name="body" rows="20" cols="80">{{printf "%s" .Body}}</textarea>
+            </div>
         </form>
-    </div>
-</form>
-
+        <button onclick="document.getElementById('page').submit();"> Save </button>
+        <button onclick="window.location.href='/view/{{.Title}}';"> Cancel </button>
+    </body>
+</html>
