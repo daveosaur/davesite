@@ -1,0 +1,9 @@
+        <form id="comment" action="/save/" method="POST">
+            <div>
+                <input type="hidden" name="Type" value="Comment">
+                <input type="hidden" name="Article" value="{{.Title}}">
+                <p><input type="text" name="Name" placeholder="username" required></p>
+                <textarea name="Body" rows="4" cols="80" placeholder="enter a comment??"></textarea>
+            </div>
+        </form>
+        <button onclick="document.getElementById('comment').submit();"> Save </button>
