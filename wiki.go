@@ -31,7 +31,7 @@ type Data struct { //data to fill out templates
 }
 
 type Page struct { //wiki page
-    Logged bool
+    Name string
 	Title string
 	Body  []byte
 }
@@ -215,12 +215,14 @@ func authUser(w http.ResponseWriter, r *http.Request) (string, error) {
 
 // net handlers
 func viewHandler(w http.ResponseWriter, r *http.Request) {
+    logged, name := isLogged(w, r)
 	title, err := getTitle(w, r)
 	if err != nil {
 		http.NotFound(w, r)
 		return
 	}
 	p, err := getPage(title)
+    p.Name = name
 	if err != nil {
 		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
 		return
@@ -231,7 +233,9 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 	for _, comment := range c {
 		renderElement(w, "comment", &comment)
 	}
-	renderElement(w, "comment_edit", p)
+	if logged {
+        renderElement(w, "comment_edit", p)
+    }
 	renderElement(w, "footer", p)
 }
 
@@ -257,6 +261,11 @@ func editHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func saveHandler(w http.ResponseWriter, r *http.Request) {
+    logged, _ := isLogged(w, r)
+    if !logged {
+        http.Redirect(w, r, "/", http.StatusFound)
+        return
+    }
 	r.ParseForm()
 	switch r.Form.Get("Type") {
 	case "Article":
@@ -277,12 +286,14 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
             return
         }
 		http.Redirect(w, r, "/view/"+c.Title, http.StatusFound)
+        /*
 	case "NewUser":
 		err := saveUser(w, r)
 		if err != nil {
 			log.Fatal(err)
 		}
 		http.Redirect(w, r, "/", http.StatusFound) //make a success page
+        */
 	default:
 		//do something for fake http request
 		return
