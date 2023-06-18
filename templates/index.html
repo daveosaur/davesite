@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title> davewiki </title>
+        <script>
+            function delPage(input) {
+                document.getElementById(input).submit();
+            }
+        </script>
+    </head>
+    <body>
+        <h1> davewiki </h1>
+        {{$logged := .Logged}}
+        {{if $logged}}{{.Name}}{{end}}
+            {{range .Files}}
+                <div>
+                <form id="{{.}}" action="/delete/{{.}}" method="POST">
+                    <span>
+                        <a href="/view/{{.}}">{{.}} </a>
+                        {{if $logged}}
+                        [<a href="/edit/{{.}}">edit</a>]
+                        [<a href="#" onclick="delPage({{.}})">delete</a>]
+                    </span>
+                    {{end}}
+                </form>
+                </div>
+            {{end}}
+        <br>
+        {{if $logged}}
+        <p>
+            <a href="/new/"> new page </a>
+        </p>
+        {{else}}
+        <form id="Login" action="/login/" method="POST"><br>
+            <div>
+                <label for="Name"> login!!!: </label>
+                <input type="text" name="Name" required>
+            </div>
+            <div>
+                <label for="Pass"> password????: </label>
+                <input type="password" name="Pass" required>
+            </div>
+            <input type="submit" value="button!">
+        </form><br>
+        <p>
+            <a href="/signup/"> new user?? </a>
+        </p>
+        {{end}}
+    </body>
+</html>
+
